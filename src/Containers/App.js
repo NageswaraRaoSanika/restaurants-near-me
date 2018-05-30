@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import Header from '../Components/Header';
 import GetLocation from '../Components/GetLocation';
 import styles from '../Common/Styles';
 import Filters from '../Components/Filters';
+import Restaurants from '../Components/Restaurants';
 
-import {getCuisineTypes} from '../Apis';
+import { getCuisineTypes, getRestaurants } from '../Apis';
 
 class ResponsiveDrawer extends Component {
 
@@ -25,11 +25,14 @@ class ResponsiveDrawer extends Component {
       locationModalOpen: true,
       selectedLocation: {},
       cuisineTypes:[],
-      selectedCuisines: []
+      selectedCuisines: [],
+      searchQuery: "",
+      restaurants: []
     };
 
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.handleLocationModalClose = this.handleLocationModalClose.bind(this);
+    this.filterRestaurants = this.filterRestaurants.bind(this);
   }
 
   handleDrawerToggle = () => {
@@ -42,29 +45,51 @@ class ResponsiveDrawer extends Component {
 
   getSelectedLocation = (location) => {
     this.handleLocationModalClose();
-
     getCuisineTypes(location.id).then( cuisines => {
       this.setState({
         selectedLocation: location,
         cuisineTypes: cuisines
       });
-    });
+    }).then( x => {
+      this.filterRestaurants();
+    })
 
+  }
+
+  filterRestaurants = () => {
+    const {selectedLocation, selectedCuisines, searchQuery} = this.state;
+    getRestaurants(selectedLocation.id, searchQuery, selectedCuisines).then( restaurants => {
+      this.setState({
+        restaurants: restaurants
+      });
+    });
   }
 
   getSelectedCuisines = (cuisines) => {
     this.setState({
       selectedCuisines: cuisines
     });
-    console.log(cuisines)
+  }
+
+  setRestaurantsText = (e) => {
+    this.setState({
+      searchQuery: e.target.value
+    });
   }
 
   render() {
 
     const { classes } = this.props;
-    const {repsonsiveHeaderMenu, locationModalOpen, selectedLocation, cuisineTypes} = this.state;
-
-    const filters = <Filters getLocation={this.getSelectedLocation} selectedLocation={selectedLocation} cuisineTypes={cuisineTypes} selectedCuisines={this.getSelectedCuisines}/>
+    const {repsonsiveHeaderMenu, locationModalOpen, selectedLocation, cuisineTypes, searchQuery, restaurants} = this.state;
+    const filters = <Filters
+                      restaurantsText={searchQuery}
+                      setRestaurantsText={this.setRestaurantsText}
+                      getLocation={this.getSelectedLocation}
+                      selectedLocation={selectedLocation}
+                      cuisineTypes={cuisineTypes}
+                      selectedCuisines={this.getSelectedCuisines}
+                      filter={this.filterRestaurants}
+                    />
 
     return (
       <div className={classes.root}>
@@ -73,9 +98,7 @@ class ResponsiveDrawer extends Component {
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Typography noWrap>
-            List of Restaurants will come here
-          </Typography>
+          <Restaurants data={restaurants} />
         </main>
 
         <GetLocation open={locationModalOpen} getLocation={this.getSelectedLocation} onClose={this.handleLocationModalClose} />

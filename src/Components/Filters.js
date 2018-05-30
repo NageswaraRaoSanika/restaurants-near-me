@@ -8,7 +8,10 @@ export default class Filters extends Component{
     getLocation: PropTypes.func.isRequired,
     selectedLocation: PropTypes.object,
     cuisineTypes: PropTypes.array,
-    selectedCuisines: PropTypes.func
+    selectedCuisines: PropTypes.func,
+    filter: PropTypes.func,
+    restaurantsText: PropTypes.string,
+    setRestaurantsText: PropTypes.func
   };
 
   constructor() {
@@ -32,7 +35,7 @@ export default class Filters extends Component{
   }
 
   render() {
-    const {selectedLocation, getLocation, cuisineTypes} = this.props;
+    const {selectedLocation, getLocation, cuisineTypes, filter, restaurantsText, setRestaurantsText} = this.props;
 
     return(
       <div key='1122'>
@@ -47,7 +50,7 @@ export default class Filters extends Component{
           <ListItemIcon>
             <Icon>restaurant</Icon>
           </ListItemIcon>
-          <TextField label="Restaurant Name" />
+          <TextField defaultValue={restaurantsText} onChange={(e) => setRestaurantsText(e)} label="Restaurant Name" />
         </ListItem>
         <br/>
         <ListItem>
@@ -85,7 +88,7 @@ export default class Filters extends Component{
           }
         </ListItem>
         <br/><br/>
-        <ListItem button>
+        <ListItem button onClick={filter}>
           <Button variant="raised" color="primary" aria-label="Filter">
             <Icon>filter_list</Icon> Filter
           </Button>
