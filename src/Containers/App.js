@@ -6,7 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 import Header from '../Components/Header';
 import GetLocation from '../Components/GetLocation';
-import styles from './Styles';
+import styles from '../Common/Styles';
+import Filters from '../Components/Filters';
+
+import {getCuisineTypes} from '../Apis';
 
 class ResponsiveDrawer extends Component {
 
@@ -19,7 +22,10 @@ class ResponsiveDrawer extends Component {
 
     this.state = {
       repsonsiveHeaderMenu: false,
-      locationModalOpen: true
+      locationModalOpen: true,
+      selectedLocation: {},
+      cuisineTypes:[],
+      selectedCuisines: []
     };
 
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
@@ -34,18 +40,36 @@ class ResponsiveDrawer extends Component {
     this.setState({ locationModalOpen: false });
   }
 
-  getSelectedLocation = (location) =>{
-    console.log(location);
+  getSelectedLocation = (location) => {
+    this.handleLocationModalClose();
+
+    getCuisineTypes(location.id).then( cuisines => {
+      this.setState({
+        selectedLocation: location,
+        cuisineTypes: cuisines
+      });
+    });
+
   }
+
+  getSelectedCuisines = (cuisines) => {
+    this.setState({
+      selectedCuisines: cuisines
+    });
+    console.log(cuisines)
+  }
+
   render() {
 
     const { classes } = this.props;
-    const {repsonsiveHeaderMenu, locationModalOpen} = this.state;
+    const {repsonsiveHeaderMenu, locationModalOpen, selectedLocation, cuisineTypes} = this.state;
+
+    const filters = <Filters getLocation={this.getSelectedLocation} selectedLocation={selectedLocation} cuisineTypes={cuisineTypes} selectedCuisines={this.getSelectedCuisines}/>
 
     return (
       <div className={classes.root}>
 
-        <Header handleDrawerToggle={this.handleDrawerToggle} responsiveHeaderMenuOpen={repsonsiveHeaderMenu} classes={classes} />
+        <Header children={filters} handleDrawerToggle={this.handleDrawerToggle} responsiveHeaderMenuOpen={repsonsiveHeaderMenu} classes={classes} />
 
         <main className={classes.content}>
           <div className={classes.toolbar} />

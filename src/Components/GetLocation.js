@@ -17,28 +17,23 @@ class GetLocation extends React.Component {
     const { fullScreen, open, onClose, getLocation } = this.props;
 
     return (
-      <div>
-        <Dialog
-          fullScreen={fullScreen}
-          open={open}
-          onClose={onClose}
-          aria-labelledby="responsive-dialog-title" >
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={onClose}
+        aria-labelledby="responsive-dialog-title" >
 
-          <DialogTitle id="responsive-dialog-title">{"Please Enter your Location"}</DialogTitle>
+        <DialogTitle id="responsive-dialog-title">{"Please Enter your Location"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Setting up Location will help you in Finding the best restaurants, cafés, and bars in your area.
+          </DialogContentText><br/><br/>
 
-          <DialogContent>
-            <DialogContentText>
-              Setting up Location will help you in Finding the best restaurants, cafés, and bars in your area.
-            </DialogContentText>
-            <br/><br/>
-
-            <LocationAutoComplete getLocation={getLocation} />
-
-            <br/><br/>
-          </DialogContent>
-
-        </Dialog>
-      </div>
+          <LocationAutoComplete getLocation={getLocation} />
+          
+          <br/><br/><br/><br/><br/><br/><br/><br/>
+        </DialogContent>
+      </Dialog>
     );
   }
 }

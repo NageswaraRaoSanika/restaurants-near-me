@@ -1,6 +1,6 @@
 import blue from '@material-ui/core/colors/blue';
 
-const drawerWidth = 280;
+const drawerWidth = 300;
 const primary = blue[500];
 
 const styles = theme => ({
@@ -38,9 +38,8 @@ const styles = theme => ({
     padding: "3%"
   },
   container: {
-    flexGrow: 1,
     position: 'relative',
-    height: 150,
+    height: 50
   },
   suggestionsContainerOpen: {
     position: 'absolute',

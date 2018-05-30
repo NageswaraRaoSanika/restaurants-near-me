@@ -5,22 +5,22 @@ import Autosuggest from 'react-autosuggest';
 import { MenuItem, TextField, Paper} from '@material-ui/core';
 
 import { withStyles } from '@material-ui/core/styles';
-import styles from './Styles';
+import styles from '../Common/Styles';
 
 import {getLocations} from '../Apis';
 
 const renderInput = (inputProps) => {
   const { classes, ref, ...other } = inputProps;
   return (
-    <TextField fullWidth InputProps={{inputRef: ref, ...other, }} />
+    <TextField label="Type a Location Name" fullWidth InputProps={{inputRef: ref, ...other, }} />
   );
 }
 
-const getSuggestionValue = suggestion => suggestion.title;
+const getSuggestionValue = suggestion => suggestion.name;
 
 const renderSuggestion = (suggestion) => (
   <MenuItem component="div">
-    <div>{suggestion.title}</div>
+    <div>{suggestion.name}</div>
   </MenuItem>
 );
 
@@ -38,7 +38,8 @@ class LocationAutoComplete extends Component{
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    getLocation:PropTypes.func.isRequired
+    getLocation:PropTypes.func.isRequired,
+    selectedLocation:PropTypes.string
   }
 
   constructor() {
@@ -53,6 +54,14 @@ class LocationAutoComplete extends Component{
     this.onSuggestionsFetchRequested = this.onSuggestionsFetchRequested.bind(this);
     this.onSuggestionsClearRequested = this.onSuggestionsClearRequested.bind(this);
     this.getSelectedLocationDetails = this.getSelectedLocationDetails.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.selectedLocation){
+      this.setState({
+        value: nextProps.selectedLocation
+      });
+    }
   }
 
   onChange = (event, { newValue }) => {
@@ -88,7 +97,6 @@ class LocationAutoComplete extends Component{
     const {classes} = this.props;
 
     const inputProps = {
-      placeholder: 'Type a programming language',
       value,
       onChange: this.onChange
     };

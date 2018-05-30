@@ -3,18 +3,17 @@ import PropTypes from 'prop-types';
 
 import { Drawer, AppBar, Toolbar, Typography, IconButton, Hidden, Divider, Icon} from '@material-ui/core';
 
-import Filters from './Filters';
 
 export default class Header extends Component{
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
     responsiveHeaderMenuOpen: PropTypes.bool,
-    handleDrawerToggle: PropTypes.func
+    handleDrawerToggle: PropTypes.func,
   }
 
   render() {
-    const {classes, responsiveHeaderMenuOpen, handleDrawerToggle} = this.props;
+    const { children, classes, responsiveHeaderMenuOpen, handleDrawerToggle } = this.props;
 
     const drawer = (
       <div style={{padding: "20px"}}>
@@ -24,7 +23,7 @@ export default class Header extends Component{
         <br/>
         <Divider />
         <br/>
-        <Filters />
+        {children}
       </div>
     );
 
