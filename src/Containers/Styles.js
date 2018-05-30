@@ -1,6 +1,8 @@
 import blue from '@material-ui/core/colors/blue';
+
 const drawerWidth = 280;
 const primary = blue[500];
+
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -38,7 +40,7 @@ const styles = theme => ({
   container: {
     flexGrow: 1,
     position: 'relative',
-    height: 200,
+    height: 150,
   },
   suggestionsContainerOpen: {
     position: 'absolute',
@@ -54,6 +56,7 @@ const styles = theme => ({
     margin: 0,
     padding: 0,
     listStyleType: 'none',
+    listStyle: 'none',
   }
 });
 

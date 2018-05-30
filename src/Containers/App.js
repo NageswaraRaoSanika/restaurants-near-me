@@ -11,7 +11,7 @@ import styles from './Styles';
 class ResponsiveDrawer extends Component {
 
   static propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired
   }
 
   constructor() {
@@ -19,19 +19,28 @@ class ResponsiveDrawer extends Component {
 
     this.state = {
       repsonsiveHeaderMenu: false,
+      locationModalOpen: true
     };
 
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
+    this.handleLocationModalClose = this.handleLocationModalClose.bind(this);
   }
 
   handleDrawerToggle = () => {
     this.setState({ repsonsiveHeaderMenu: !this.state.repsonsiveHeaderMenu });
   };
 
+  handleLocationModalClose = () => {
+    this.setState({ locationModalOpen: false });
+  }
+
+  getSelectedLocation = (location) =>{
+    console.log(location);
+  }
   render() {
 
     const { classes } = this.props;
-    const {repsonsiveHeaderMenu} = this.state;
+    const {repsonsiveHeaderMenu, locationModalOpen} = this.state;
 
     return (
       <div className={classes.root}>
@@ -45,7 +54,7 @@ class ResponsiveDrawer extends Component {
           </Typography>
         </main>
 
-        <GetLocation />
+        <GetLocation open={locationModalOpen} getLocation={this.getSelectedLocation} onClose={this.handleLocationModalClose} />
 
       </div>
     );

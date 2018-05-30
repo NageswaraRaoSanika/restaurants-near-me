@@ -1,40 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button,Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,withMobileDialog} from '@material-ui/core';
+import { Dialog, DialogContent, DialogContentText, DialogTitle, withMobileDialog } from '@material-ui/core';
 
-import LocationAutoComplete from './LocationAutoComplete';
+import LocationAutoComplete from '../Containers/LocationAutoComplete';
 
 class GetLocation extends React.Component {
   static propTypes = {
     fullScreen: PropTypes.bool.isRequired,
-  };
-
-  constructor() {
-    super();
-    this.state = {
-      open: true,
-    };
-
-  }
-
-  handleClickOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = () => {
-    this.setState({ open: false });
+    onClose: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+    getLocation: PropTypes.func.isRequired
   };
 
   render() {
-    const { fullScreen } = this.props;
+    const { fullScreen, open, onClose, getLocation } = this.props;
 
     return (
       <div>
         <Dialog
           fullScreen={fullScreen}
-          open={this.state.open}
-          onClose={this.handleClose}
+          open={open}
+          onClose={onClose}
           aria-labelledby="responsive-dialog-title" >
 
           <DialogTitle id="responsive-dialog-title">{"Please Enter your Location"}</DialogTitle>
@@ -45,16 +32,10 @@ class GetLocation extends React.Component {
             </DialogContentText>
             <br/><br/>
 
-            <LocationAutoComplete />
+            <LocationAutoComplete getLocation={getLocation} />
 
             <br/><br/>
           </DialogContent>
-
-          <DialogActions>
-            <Button variant="raised" onClick={this.handleClose} color="primary">
-              Lets Go!
-            </Button>
-          </DialogActions>
 
         </Dialog>
       </div>
