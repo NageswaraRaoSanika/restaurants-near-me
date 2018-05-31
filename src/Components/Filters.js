@@ -37,6 +37,34 @@ export default class Filters extends Component{
   render() {
     const {selectedLocation, getLocation, cuisineTypes, filter, restaurantsText, setRestaurantsText} = this.props;
 
+    const cuisineTypesElemenet = !cuisineTypes.length ? <Button> Cuisine Types </Button>
+    : <Select
+      multiple
+      value={this.state.cuisineTypesSelected}
+      onChange={this.handleChange}
+      onClose={this.getCuisineIds}
+      input={<Input fullWidth/>}
+      renderValue={selected => (
+        <div style={{display: "flex", flexWrap: "wrap" }}>
+          {selected.map(value => <Chip style={{margin: "1px"}} key={value} label={value.split("__")[1]} />)}
+        </div>
+      )}
+      MenuProps={{
+        PaperProps: {
+          style: {
+            width: 250,
+          },
+        }
+      }}
+      >
+      { cuisineTypes.map(c => (
+      <MenuItem key={c.cuisine.cuisine_id} value={c.cuisine.cuisine_id + "__" + c.cuisine.cuisine_name}>
+        <Checkbox checked={this.state.cuisineTypesSelected.indexOf(c.cuisine.cuisine_id + "__" + c.cuisine.cuisine_name) > -1}/>
+        <ListItemText primary={c.cuisine.cuisine_name} />
+      </MenuItem>
+    ))}
+  </Select> ;
+
     return(
       <div key='1122'>
         <List component="nav">
@@ -58,38 +86,12 @@ export default class Filters extends Component{
             <Icon>local_dining</Icon>
           </ListItemIcon>
           {
-            cuisineTypes.length && 
-              <Select
-                multiple
-                value={this.state.cuisineTypesSelected}
-                onChange={this.handleChange}
-                onClose={this.getCuisineIds}
-                input={<Input fullWidth/>}
-                renderValue={selected => (
-                  <div style={{display: "flex", flexWrap: "wrap" }}>
-                    {selected.map(value => <Chip style={{margin: "1px"}} key={value} label={value.split("__")[1]} />)}
-                  </div>
-                )}
-                MenuProps={{
-                  PaperProps: {
-                    style: {
-                      width: 250,
-                    },
-                  }
-                }}
-                >
-                { cuisineTypes.map(c => (
-                <MenuItem key={c.cuisine.cuisine_id} value={c.cuisine.cuisine_id + "__" + c.cuisine.cuisine_name}>
-                  <Checkbox checked={this.state.cuisineTypesSelected.indexOf(c.cuisine.cuisine_id + "__" + c.cuisine.cuisine_name) > -1}/>
-                  <ListItemText primary={c.cuisine.cuisine_name} />
-                </MenuItem>
-              ))}
-            </Select>
+            cuisineTypesElemenet
           }
         </ListItem>
         <br/><br/>
         <ListItem button onClick={filter}>
-          <Button variant="raised" color="primary" aria-label="Filter">
+          <Button fullWidth variant="raised" color="primary" aria-label="Filter">
             <Icon>filter_list</Icon> Filter
           </Button>
         </ListItem>

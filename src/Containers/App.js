@@ -8,7 +8,7 @@ import GetLocation from '../Components/GetLocation';
 import styles from '../Common/Styles';
 import Filters from '../Components/Filters';
 import Restaurants from '../Components/Restaurants';
-import { Select, MenuItem} from '@material-ui/core';
+import { Select, MenuItem, Typography} from '@material-ui/core';
 import { getCuisineTypes, getRestaurants } from '../Apis';
 
 class ResponsiveDrawer extends Component {
@@ -88,7 +88,6 @@ class ResponsiveDrawer extends Component {
   }
 
   render() {
-    console.log(this.state.sort);
     const { classes } = this.props;
     const {repsonsiveHeaderMenu, locationModalOpen, selectedLocation, cuisineTypes, searchQuery, restaurants} = this.state;
     const filters = <Filters
@@ -101,6 +100,8 @@ class ResponsiveDrawer extends Component {
                       filter={this.filterRestaurants}
                     />
 
+    const restaurantsElements = restaurants.length ? <Restaurants data={restaurants} /> : <Typography variant="title"><br/><br/>No Restaurants Found</Typography>;
+
     return (
       <div className={classes.root}>
 
@@ -108,19 +109,22 @@ class ResponsiveDrawer extends Component {
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <Select
-            value={this.state.sort}
-            onChange={(e) => {this.handleSort(e)}}
-            inputProps={{
-              name: 'Sort',
-              id: 'sorting-header',
-            }}
-            style={{float: "right"}}
-          >
-            <MenuItem value={"cost"}>Cost</MenuItem>
-            <MenuItem value={"rating"}>Rating</MenuItem>
-          </Select>
-          <Restaurants data={restaurants} />
+          <Typography variant="title" >
+              Restaurants
+              <Select
+                value={this.state.sort}
+                onChange={(e) => {this.handleSort(e)}}
+                inputProps={{
+                  name: 'Sort',
+                  id: 'sorting-header',
+                }}
+                style={{float: "right"}}
+              >
+                <MenuItem value={"cost"}>Cost</MenuItem>
+                <MenuItem value={"rating"}>Rating</MenuItem>
+              </Select>
+          </Typography>
+          {restaurantsElements}
         </main>
 
         <GetLocation open={locationModalOpen} getLocation={this.getSelectedLocation} onClose={this.handleLocationModalClose} />
