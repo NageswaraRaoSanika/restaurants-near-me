@@ -37,6 +37,18 @@ class ResponsiveDrawer extends Component {
     this.handleSort = this.handleSort.bind(this);
   }
 
+  componentDidMount() {
+    const selectedLocation = this.getLocationFromLocalStorage();
+    if(selectedLocation !== null) {
+      this.setState({
+        selectedLocation: selectedLocation,
+        locationModalOpen: false
+      }, () => {
+          this.getSelectedLocation(selectedLocation);
+      });
+    }
+  }
+
   handleDrawerToggle = () => {
     this.setState({ repsonsiveHeaderMenu: !this.state.repsonsiveHeaderMenu });
   };
@@ -47,6 +59,9 @@ class ResponsiveDrawer extends Component {
 
   getSelectedLocation = (location) => {
     this.handleLocationModalClose();
+
+    this.setLocationFromLocalStorage(location);
+
     getCuisineTypes(location.id).then( cuisines => {
       this.setState({
         selectedLocation: location,
@@ -86,6 +101,16 @@ class ResponsiveDrawer extends Component {
         this.filterRestaurants();
     });
   }
+
+  getLocationFromLocalStorage = () => {
+    return JSON.parse(localStorage.getItem('location'));
+  }
+
+  setLocationFromLocalStorage = (location) => {
+    return localStorage.setItem('location', JSON.stringify(location));
+  }
+
+
 
   render() {
     const { classes } = this.props;
