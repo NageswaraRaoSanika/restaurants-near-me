@@ -1,6 +1,6 @@
 # restaurants-from-zomato
 
-#Assumptions
+# Assumptions
     When user visits application https://restaurant-from-zomato.herokuapp.com/
     1. Functional
         - Selecting Preferred Location
@@ -18,7 +18,7 @@
     2. UI
         - Should be responsive, Filters can be viewed on clicking on menu icon in mobile view and exposed in desktop view
 
-#Build & development
+# Build & development
     - Cloning
         `git clone https://github.com/NageswaraRaoSanika/restaurants-near-me.git`
         `cd restaurants-near-me`
@@ -33,14 +33,14 @@
         `npm run build`
             - check build folder for static resources
 
-#Development Dependencies
+# Development Dependencies
     - React - latest
     - Material UI - latest
     - fetch api
     - react-scripts
     - react-autosuggest
 
-#Future Improvements
+# Future Improvements
     - Can use Redux for better state management
     - Adding more filters from zomato api search parameters
     - Automatic Deployments (dev & production) using flighplan or docker
