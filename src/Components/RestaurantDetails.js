@@ -22,7 +22,7 @@ class RestaurantDetails extends React.Component {
             aria-labelledby="responsive-dialog-title" >
 
             <DialogContent>
-                <Restaurant size={12} key={restaurantData.id} restaurant={restaurantData} />
+                <Restaurant size={12} key={restaurantData.id} openModal={()=>  null} restaurant={restaurantData} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={onClose} color="primary">
