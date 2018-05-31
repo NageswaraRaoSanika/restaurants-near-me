@@ -40,8 +40,8 @@ export const getCuisineTypes = (city_id) => {
         });
 }
 
-export const getRestaurants = (city_id, query, cuisines) => {
-    const queryParams = "entity_id=" + city_id + "&q=" + query + "&cuisines=" + cuisines.join(",");
+export const getRestaurants = (city_id, query, cuisines, sort) => {
+    const queryParams = "entity_id=" + city_id + "&entity_type=city&q=" + query + "&cuisines=" + cuisines.join(",")+"&sort="+sort;
     return fetch(API_DATA.restaurantsApi+queryParams, zomatoRequestHeaders)
         .then(function(response) {
             return response.json();

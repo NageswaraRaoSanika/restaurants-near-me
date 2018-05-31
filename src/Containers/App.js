@@ -8,7 +8,7 @@ import GetLocation from '../Components/GetLocation';
 import styles from '../Common/Styles';
 import Filters from '../Components/Filters';
 import Restaurants from '../Components/Restaurants';
-
+import { Select, MenuItem} from '@material-ui/core';
 import { getCuisineTypes, getRestaurants } from '../Apis';
 
 class ResponsiveDrawer extends Component {
@@ -27,12 +27,14 @@ class ResponsiveDrawer extends Component {
       cuisineTypes:[],
       selectedCuisines: [],
       searchQuery: "",
-      restaurants: []
+      restaurants: [],
+      sort: "rating"
     };
 
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.handleLocationModalClose = this.handleLocationModalClose.bind(this);
     this.filterRestaurants = this.filterRestaurants.bind(this);
+    this.handleSort = this.handleSort.bind(this);
   }
 
   handleDrawerToggle = () => {
@@ -57,8 +59,8 @@ class ResponsiveDrawer extends Component {
   }
 
   filterRestaurants = () => {
-    const {selectedLocation, selectedCuisines, searchQuery} = this.state;
-    getRestaurants(selectedLocation.id, searchQuery, selectedCuisines).then( restaurants => {
+    const {selectedLocation, selectedCuisines, searchQuery, sort} = this.state;
+    getRestaurants(selectedLocation.id, searchQuery, selectedCuisines, sort).then( restaurants => {
       this.setState({
         restaurants: restaurants
       });
@@ -77,8 +79,16 @@ class ResponsiveDrawer extends Component {
     });
   }
 
-  render() {
+  handleSort = (e) => {
+    this.setState({
+      sort: e.target.value
+    }, () => {
+        this.filterRestaurants();
+    });
+  }
 
+  render() {
+    console.log(this.state.sort);
     const { classes } = this.props;
     const {repsonsiveHeaderMenu, locationModalOpen, selectedLocation, cuisineTypes, searchQuery, restaurants} = this.state;
     const filters = <Filters
@@ -98,6 +108,18 @@ class ResponsiveDrawer extends Component {
 
         <main className={classes.content}>
           <div className={classes.toolbar} />
+          <Select
+            value={this.state.sort}
+            onChange={(e) => {this.handleSort(e)}}
+            inputProps={{
+              name: 'Sort',
+              id: 'sorting-header',
+            }}
+            style={{float: "right"}}
+          >
+            <MenuItem value={"cost"}>Cost</MenuItem>
+            <MenuItem value={"rating"}>Rating</MenuItem>
+          </Select>
           <Restaurants data={restaurants} />
         </main>
 

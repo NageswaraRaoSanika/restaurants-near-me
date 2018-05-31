@@ -2,48 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, IconButton, Icon, Typography } from '@material-ui/core';
+import {Card, CardHeader, CardMedia, CardContent, CardActions, Avatar, Button, Icon, Typography, Grid } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
+import Image from '../Common/default.jpeg';
 
-const styles = theme => ({
-    card: {
-      minWidth: 300,
-      margin: "10px"
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    actions: {
-      display: 'flex',
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
-      marginLeft: 'auto',
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-    avatar: {
-      backgroundColor: red[500],
-    },
-  });
+
 
 class RecipeReviewCard extends React.Component {
-  state = { expanded: false };
-
-  handleExpandClick = () => {
-    this.setState({ expanded: !this.state.expanded });
+  static propTypes = {
+    classes: PropTypes.object.isRequired,
+    restaurant: PropTypes.object
   };
 
   render() {
     const { classes, restaurant } = this.props;
     const restaurantData = restaurant.restaurant;
+    const imageURL = restaurantData.thumb ? restaurantData.thumb : Image;
     return (
-      <div>
+      <Grid item xs={12} sm={4}>
         <Card className={classes.card}>
           <CardHeader
             avatar={
@@ -51,41 +27,53 @@ class RecipeReviewCard extends React.Component {
                 {restaurantData.name[0]}
               </Avatar>
             }
-            action={
-                <Icon>star_rate</Icon>
-            }
             title={restaurantData.name}
-            subheader={restaurantData.cuisines}
+            subheader={restaurantData.location.locality}
           />
           <CardMedia
             className={classes.media}
-            image={restaurantData.thumb }
-            title="Contemplative Reptile"
+            image={ imageURL }
+            title="Restaurant Thumb"
           />
           <CardContent>
-            <Typography component="p">
+            <Typography component="label">
+              {restaurantData.cuisines}
+            </Typography><hr/>
+            <Typography component="address">
               {restaurantData.location.address}
-              <br/>
-              {restaurantData.location.locality_verbose}
+            </Typography><hr/>
+            <Typography component="label">
+              <Icon>local_play</Icon> {restaurantData.currency + " " + restaurantData.average_cost_for_two } for 2
             </Typography>
           </CardContent>
           <CardActions className={classes.actions} disableActionSpacing>
-            <IconButton aria-label="Add to favorites">
-                <Icon>favorite</Icon>
-            </IconButton>
-            <IconButton aria-label="Share">
-                <Icon>share</Icon>
-            </IconButton>
+            <Button aria-label="Votes">
+                <Icon>favorite</Icon> {restaurantData.user_rating.votes}
+            </Button>
+            <Button aria-label="Rating">
+                <Icon style={{color: `#${restaurantData.user_rating.rating_color}`}}>star</Icon> {restaurantData.user_rating.aggregate_rating}
+            </Button>
           </CardActions>
         </Card>
-      </div>
+      </Grid>
     );
   }
 }
 
-RecipeReviewCard.propTypes = {
-  classes: PropTypes.object.isRequired,
-  restaurant: PropTypes.object
-};
+const styles = theme => ({
+  card: {
+    margin: "10px"
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%'
+  },
+  actions: {
+    display: 'flex',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+});
 
 export default withStyles(styles)(RecipeReviewCard);
