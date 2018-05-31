@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 
-import { withStyles } from '@material-ui/core/styles';
-
 import Header from '../Components/Header';
 import GetLocation from '../Components/GetLocation';
 import styles from '../Common/Styles';
 import Filters from '../Components/Filters';
 import Restaurants from '../Components/Restaurants';
+
 import { Select, MenuItem, Typography} from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
+
 import { getCuisineTypes, getRestaurants } from '../Apis';
 
 class ResponsiveDrawer extends Component {
@@ -31,6 +32,7 @@ class ResponsiveDrawer extends Component {
       sort: "rating"
     };
 
+    // binding methods in constructor (autobinding)
     this.handleDrawerToggle = this.handleDrawerToggle.bind(this);
     this.handleLocationModalClose = this.handleLocationModalClose.bind(this);
     this.filterRestaurants = this.filterRestaurants.bind(this);
@@ -38,17 +40,15 @@ class ResponsiveDrawer extends Component {
   }
 
   componentDidMount() {
+    // Check for the location in localstorage
     const selectedLocation = this.getLocationFromLocalStorage();
+    // If Location found then perform automatic calls based on our storage
     if(selectedLocation !== null) {
-      this.setState({
-        selectedLocation: selectedLocation,
-        locationModalOpen: false
-      }, () => {
-          this.getSelectedLocation(selectedLocation);
-      });
+      this.getSelectedLocation(selectedLocation);
     }
   }
 
+  //helper functions for filters and header drawers
   handleDrawerToggle = () => {
     this.setState({ repsonsiveHeaderMenu: !this.state.repsonsiveHeaderMenu });
   };
@@ -102,15 +102,13 @@ class ResponsiveDrawer extends Component {
     });
   }
 
+  //getters and setter for localstorage, we can also use sessionStorage for sessions
   getLocationFromLocalStorage = () => {
     return JSON.parse(localStorage.getItem('location'));
   }
-
   setLocationFromLocalStorage = (location) => {
     return localStorage.setItem('location', JSON.stringify(location));
   }
-
-
 
   render() {
     const { classes } = this.props;

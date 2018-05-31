@@ -66,7 +66,7 @@ export default class Filters extends Component{
   </Select> ;
 
     return(
-      <div key='1122'>
+      <div>
         <List component="nav">
         <ListItem>
           <ListItemIcon>

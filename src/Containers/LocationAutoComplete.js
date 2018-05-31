@@ -9,6 +9,7 @@ import styles from '../Common/Styles';
 
 import {getLocations} from '../Apis';
 
+//helper functions to render menus and suggesions in autocomplete
 const renderInput = (inputProps) => {
   const { classes, ref, ...other } = inputProps;
   return (
